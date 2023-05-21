@@ -63,8 +63,6 @@ function Install-LibSodium
     [CmdletBinding()]
     Param
     (
-        [Parameter(Mandatory=$True,Position=0)]
-        [string]$Path,
         [Parameter(Mandatory=$false)]
         [string]$VcPkgPath="$ENV:Temp\VcPkg"
     ) 
