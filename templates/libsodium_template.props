@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<PropertyGroup Label="PropertySheets_Included">
+  <libsodium_integration>winapp_uses_libsodium</libsodium_integration>
+</PropertyGroup>
+    
+<!--
+    //==============================================================================
+    //
+    //   libsodium.props
+    //   Property sheet for the libsodium log tool integration.
+    //==============================================================================
+    //  Copyright (C) Guilaume Plante 2020 <codecastor@icloud.com>
+    //==============================================================================
+-->
+  <Choose>
+    <When Condition="'$(LIBSODIUM_X86_PATH)'==''">
+      <PropertyGroup>
+          <LIBSODIUM_X86_PATH>__libsodium_x86_windows_path__</LIBSODIUM_X86_PATH>
+      </PropertyGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="'$(LIBSODIUM_X64_PATH)'==''">
+      <PropertyGroup>
+          <LIBSODIUM_X64_PATH>__libsodium_x64_windows_path__</LIBSODIUM_X64_PATH>
+      </PropertyGroup>
+    </When>
+  </Choose>
+
+  <!-- General libsodium Environment added in UserMacros -->
+  <PropertyGroup Label="libsodiumMacros">
+    <LibSodiumRootx86>$(LIBSODIUM_X86_PATH)</LibSodiumRootx86> 
+    <LibSodiumRootx64>$(LIBSODIUM_X64_PATH)</LibSodiumRootx64> 
+    <libsodiumx86DebugLibPath>$(LibSodiumRootx86)\debug\lib</libsodiumx86DebugLibPath> 
+    <libsodiumx86DebugBinPath>$(LibSodiumRootx86)\debug\bin</libsodiumx86DebugBinPath> 
+    <libsodiumx86ReleaseLibPath>$(LibSodiumRootx86)\lib</libsodiumx86ReleaseLibPath> 
+    <libsodiumx86ReleaseBinPath>$(LibSodiumRootx86)\bin</libsodiumx86ReleaseBinPath> 
+
+    <libsodiumx64DebugLibPath>$(LibSodiumRootx64)\debug\lib</libsodiumx64DebugLibPath> 
+    <libsodiumx64DebugBinPath>$(LibSodiumRootx64)\debug\bin</libsodiumx64DebugBinPath> 
+    <libsodiumx64ReleaseLibPath>$(LibSodiumRootx64)\lib</libsodiumx64ReleaseLibPath> 
+    <libsodiumx64ReleaseBinPath>$(LibSodiumRootx64)\bin</libsodiumx64ReleaseBinPath> 
+    <libsodiumIncludesPath>$(AxProtectorDevKitPath)\include;$(libsodiumDevKitPath)\include;$(libsodiumDevKitPath)\HipApi\C++\include;$(libsodiumDevKitPath)\HipApi\C</libsodiumIncludesPath> 
+    <libsodiumx64LibsPath>$(libsodiumReleaseLibPath);$(libsodiumReleaseBinPath)</libsodiumx64LibsPath> 
+    <LibSodium_Lib>libsodium.lib</LibSodium_Lib>
+    <LibSodium_Dll>libsodium.dll</LibSodium_Dll>
+    <libsodium_LinkOpt_Lib>$(LibSodium_Lib)</libsodium_LinkOpt_Lib>
+  </PropertyGroup>   
+
+   <ItemDefinitionGroup Condition="'$(Platform)'=='Win32' Or '$(Platform)'=='x86'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(libsodiumIncludesPath);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>libsodium_ENABLED;SODIUM_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(libsodiumx86ReleaseLibPath);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(libsodium_LinkOpt_Lib);%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+   <ItemDefinitionGroup Condition="'$(Platform)'=='Win64' Or '$(Platform)'=='x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(libsodiumIncludesPath);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>libsodium_ENABLED;SODIUM_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(libsodiumx64LibsPath);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(libsodium_LinkOpt_Lib);%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+</Project>
+
